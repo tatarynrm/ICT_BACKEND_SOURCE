@@ -25,7 +25,7 @@ const usersRoute = require("./routes/users");
 const cargosRoute = require("./routes/cargos");
 const zasRoute = require("./routes/zas");
 const UrRoute = require("./routes/UR");
-const chatRoute = require("./routes/chat");
+// const chatRoute = require("./routes/chat");
 const zapRoute = require("./routes/zap");
 const commentsRoute = require("./routes/comments");
 // Middlewares------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ app.use("/users", usersRoute);
 app.use("/cargos", cargosRoute);
 app.use("/zas", zasRoute);
 app.use("/ur", UrRoute);
-app.use("/chat", chatRoute);
+// app.use("/chat", chatRoute);
 app.use("/zap", zapRoute);
 app.use("/comments", commentsRoute);
 // ROUTES------------------------------------------------------------------------------------------------------
