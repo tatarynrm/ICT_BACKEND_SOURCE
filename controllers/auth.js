@@ -14,6 +14,7 @@ const mobileLogin = async (req, res) => {
         a.IMJA,
         a.PIPFULL,
         a.ISDIR,
+        a.PIP,
         b.DB_PASSWD,
         c.MAIL
     FROM
@@ -53,6 +54,7 @@ const login = async (req, res) => {
         a.IMJA,
         a.PIPFULL,
         a.ISDIR,
+        a.PIP,
         b.DB_PASSWD,
         c.MAIL
     FROM
@@ -108,6 +110,7 @@ const getMe = async (req, res) => {
     a.IMJA,
     a.PIPFULL,
     a.ISDIR,
+    a.PIP,
     b.DB_PASSWD,
     c.MAIL,
     d.TEL

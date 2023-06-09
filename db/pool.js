@@ -9,5 +9,10 @@ const pool = {
   password: process.env.DB_PASSWORD,
   connectString: process.env.DB_CONNECTION_URI,
 };
+// const pool = {
+//   user: "rt",
+//   password: "Rt45Dcv2",
+//   connectString: "http://192.168.5.180:8800/ICT",
+// };
 
 module.exports = pool;
