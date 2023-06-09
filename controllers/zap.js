@@ -39,12 +39,11 @@ const getDownloadById = async (req, res) => {
 
 const getGroups = async (req, res) => {
   const { NGROUP, KOD, DATCLOSE, KOD_AUTHOR, kod } = req.body;
-
   try {
     const connection = await oracledb.getConnection(pool);
     const result = await connection.execute(`select a.*, 
                                             p_zap.CountNewZap(${kod} ,a.kod) as countnewzap 
-                                            from ictdat.zapgroup a`);
+                                            from zapgroup a`);
     res.status(200).json(result.rows);
   } catch (error) {
     console.log(error);

@@ -21,7 +21,6 @@ const addZapComment = async (req, res) => {
 
   try {
     const connection = await oracledb.getConnection(pool);
-    3;
     const result = await connection.execute(
       `BEGIN
            p_zap.AddComm(:pKodAuthor, :pKodZap, :pComment,:pKodCom);
