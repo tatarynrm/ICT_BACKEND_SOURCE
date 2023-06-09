@@ -4,7 +4,7 @@ const pool = require("../db/pool");
 
 const getAllZap = async (req, res) => {
   const { KOD_OS } = req.body;
-  console.log("-------------------", KOD_OS);
+  console.log("----getAllZap--", KOD_OS);
   try {
     const connection = await oracledb.getConnection(pool);
     connection.currentSchema = "ICTDAT";
@@ -23,27 +23,16 @@ const getAllZap = async (req, res) => {
     console.log("1---", error);
   }
 };
-const getDownloadById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const connection = await oracledb.getConnection(pool);
-    const result = await connection.execute(
-      `select * from ictdat.AAAA_ZAGRYZKY where ID = ${id}`
-    );
-
-    res.status(200).json(result.rows[0]);
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const getGroups = async (req, res) => {
   const { NGROUP, KOD, DATCLOSE, KOD_AUTHOR, kod } = req.body;
   try {
     const connection = await oracledb.getConnection(pool);
-    const result = await connection.execute(`select a.*, 
-                                            p_zap.CountNewZap(${kod} ,a.kod) as countnewzap 
-                                            from zapgroup a`);
+    const result = await connection.execute(`select a.*,
+                                            ictdat.p_zap.CountNewZap(${kod} ,a.kod) as countnewzap
+                                            from ictdat.zapgroup a`);
+    // const result = await connection.execute(`select *
+    //                                         from ictdat.zapgroup a`);
     res.status(200).json(result.rows);
   } catch (error) {
     console.log(error);
