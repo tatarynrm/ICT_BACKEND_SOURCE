@@ -110,10 +110,10 @@ app.post("/mail-send", async (req, res) => {
 
 // WEB SOCKETS------------------------------------------------------------------------
 const io = new Server(server, {
-  // cors: {
-  //   origin: "http://localhost:3000",
-  //   methods: ["GET", "POST"],
-  // },
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
 });
 
 let onlineUsers = [];
@@ -136,7 +136,8 @@ io.on("connection", (socket) => {
   });
   io.sockets.emit("getUsers", onlineUsers);
   socket.on("newZap", (data) => {
-    console.log("---data-", data);
+    console.log("zapData", data);
+
     io.sockets.emit("showNewZap", data);
   });
   socket.on("newComment", (data) => {

@@ -12,7 +12,7 @@ const pool = {
 // const pool = {
 //   user: "rt",
 //   password: "Rt45Dcv2",
-//   connectString: "http://192.168.5.180:8800/ICT",
+//   connectString: "localhost/ORCL",
 // };
 
 module.exports = pool;
