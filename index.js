@@ -97,7 +97,7 @@ app.post("/mail-send", async (req, res) => {
   }
 });
 
-// Connect to the Oracle database
+//# Connect to the Oracle database
 // oracleEmitter.connect();
 
 // Execute a sample query
