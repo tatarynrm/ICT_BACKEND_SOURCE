@@ -58,9 +58,26 @@ const setReadComments = async (req, res) => {
     console.log(error);
   }
 };
-
+const deleteCommentById = async (req, res) => {
+  const { pKodAutor, pKodComm } = req.body;
+  console.log(pKodComm, pKodAutor);
+  try {
+    const connection = await oracledb.getConnection(pool);
+    const result = await connection.execute(
+      `BEGIN
+          ICTDAT.p_zap.DeleteComm(:pKodAutor,:pKodComm);
+        END;`,
+      {
+        pKodAutor,
+        pKodComm,
+      }
+    );
+    res.status(200).json(result);
+  } catch (error) {}
+};
 module.exports = {
   getCommentsById,
   addZapComment,
   setReadComments,
+  deleteCommentById,
 };
