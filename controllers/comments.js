@@ -72,6 +72,7 @@ const deleteCommentById = async (req, res) => {
         pKodComm,
       }
     );
+
     res.status(200).json(result);
   } catch (error) {}
 };
