@@ -133,6 +133,7 @@ const removeUser = (socketId) => {
 const getUser = (userId) => {
   return onlineUsers.find((user) => user.userId === userId);
 };
+// ..
 
 io.on("connection", (socket) => {
   socket.on("newUser", (userId) => {
