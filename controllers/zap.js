@@ -23,6 +23,27 @@ const getAllZap = async (req, res) => {
     console.log("1---", error);
   }
 };
+const getClosedZap = async (req, res) => {
+  const { KOD_OS } = req.body;
+  console.log("----getAllZap--", KOD_OS);
+  try {
+    const connection = await oracledb.getConnection(pool);
+    connection.currentSchema = "ICTDAT";
+    const result = await connection.execute(
+      `SELECT a.*,
+              b.pip,
+              p_zap.CountComm(a.kod) as countcomm,
+              p_zap.CountNewComm(${KOD_OS}, a.kod) as countnewcomm,
+              p_zap.IsNewZap(${KOD_OS}, a.kod) as isnew
+       FROM zap a
+       JOIN OS b on a.kod_os = b.kod
+       WHERE a.status = 1`
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.log("1---", error);
+  }
+};
 
 const getGroups = async (req, res) => {
   const { NGROUP, KOD, DATCLOSE, KOD_AUTHOR, kod } = req.body;
@@ -92,4 +113,5 @@ module.exports = {
   getAllZap,
   getGroups,
   deleteZap,
+  getClosedZap,
 };
