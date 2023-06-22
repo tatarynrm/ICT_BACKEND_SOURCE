@@ -110,14 +110,14 @@ app.post("/mail-send", async (req, res) => {
 
 // WEB SOCKETS------------------------------------------------------------------------
 const io = new Server(server, {
-  cors: {
-    origin: "http://192.168.5.180",
-    methods: ["GET", "POST"],
-  },
   // cors: {
-  //   origin: "http://localhost:3000",
+  //   origin: "http://192.168.5.180",
   //   methods: ["GET", "POST"],
   // },
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
 });
 
 let onlineUsers = [];
@@ -141,20 +141,19 @@ io.on("connection", (socket) => {
   });
   io.sockets.emit("getUsers", onlineUsers);
   socket.on("newZap", (data) => {
-    console.log("zapData", data);
-
-    io.sockets.emit("showNewZap", data);
+    io.emit("showNewZap", data);
   });
   socket.on("deleteZap", (data) => {
     console.log(data);
-    io.sockets.emit("deleteZapAllUsers", data);
+    io.emit("deleteZapAllUsers", data);
   });
   socket.on("newComment", (data) => {
     console.log("comment data", data);
-    io.sockets.emit("showNewComment", data);
+    io.emit("showNewComment", data);
+    // io.sockets.emit("showNewComment", data);
   });
   socket.on("deleteComm", (data) => {
-    io.sockets.emit("deleteCommAllUsers", data);
+    io.emit("deleteCommAllUsers", data);
   });
   socket.on("disconnect", () => {
     // removeUser(socket.id);
