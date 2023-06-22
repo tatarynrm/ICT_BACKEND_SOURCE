@@ -119,7 +119,7 @@ const io = new Server(server, {
   //   methods: ["GET", "POST"],
   // },
 });
-
+// ...
 let onlineUsers = [];
 const addNewUser = (userId, socketId) => {
   !onlineUsers.some((user) => user.userId === userId) &&
