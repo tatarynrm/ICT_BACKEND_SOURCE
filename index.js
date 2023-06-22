@@ -142,7 +142,6 @@ io.on("connection", (socket) => {
   io.emit("getUsers", onlineUsers);
   socket.on("newZap", (data) => {
     io.emit("showNewZap", data);
-    console.log(data);
     bot.telegram.sendMessage(
       -1001894284480,
       `👉Користувач ${data.PIP} щойно добавив\nнову заявку: ✅<code><b>${data.ZAP_KOD}</b></code>\nЗавантаження: ${data.pZav}\nВивантаження: ${data.pRozv}\nІнформація: ${data.pZapText}\nПереглянути заявку: http://192.168.5.180`,
@@ -175,7 +174,7 @@ bot.start((ctx) => ctx.reply("Вітаю"));
 bot.hears("ok", (ctx) => {
   console.log(ctx.message.from.id);
 });
-bot.help((ctx) => ctx.reply("Команд поки немає"));
+// bot.help((ctx) => ctx.reply("Команд поки немає"));
 // bot.on(message("sticker"), (ctx) => ctx.reply("👍"));
 // bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 bot.launch();
