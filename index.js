@@ -141,19 +141,19 @@ io.on("connection", (socket) => {
   });
   io.sockets.emit("getUsers", onlineUsers);
   socket.on("newZap", (data) => {
-    io.emit("showNewZap", data);
+    io.sockets.emit("showNewZap", data);
   });
   socket.on("deleteZap", (data) => {
     console.log(data);
-    io.emit("deleteZapAllUsers", data);
+    io.sockets.emit("deleteZapAllUsers", data);
   });
   socket.on("newComment", (data) => {
     console.log("comment data", data);
-    io.emit("showNewComment", data);
+    io.sockets.emit("showNewComment", data);
     // io.sockets.emit("showNewComment", data);
   });
   socket.on("deleteComm", (data) => {
-    io.emit("deleteCommAllUsers", data);
+    io.sockets.emit("deleteCommAllUsers", data);
   });
   socket.on("disconnect", () => {
     // removeUser(socket.id);
