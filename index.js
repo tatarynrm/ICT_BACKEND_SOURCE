@@ -80,8 +80,8 @@ app.post("/mail-send", async (req, res) => {
       subject: `${theme}`,
       template: "email",
       context: {
-        title: "кукук",
-        full_name: "СУКА",
+        title: "Тестовий лист",
+        full_name: "Роман",
       },
     };
     const mail = await transporter.sendMail(mailOptions, (error, info) => {
@@ -151,6 +151,10 @@ io.on("connection", (socket) => {
   socket.on("deleteZap", (data) => {
     io.emit("deleteZapAllUsers", data);
   });
+  socket.on("refreshZap", (data) => {
+    console.log(data);
+    io.emit("refreshAllZap", data);
+  });
   socket.on("newComment", (data) => {
     io.emit("showNewComment", data);
     // io.sockets.emit("showNewComment", data);
@@ -174,9 +178,7 @@ bot.start((ctx) => ctx.reply("Вітаю"));
 bot.hears("ok", (ctx) => {
   console.log(ctx.message.from.id);
 });
-// bot.help((ctx) => ctx.reply("Команд поки немає"));
-// bot.on(message("sticker"), (ctx) => ctx.reply("👍"));
-// bot.hears("hi", (ctx) => ctx.reply("Hey there"));
+
 bot.launch();
 
 // Enable graceful stop

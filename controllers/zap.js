@@ -108,6 +108,26 @@ const deleteZap = async (req, res) => {
     console.log(error);
   }
 };
+const refreshZap = async (req, res) => {
+  const { pKodAuthor, pKodZap } = req.body;
+
+  try {
+    const connection = await oracledb.getConnection(pool);
+    const result = await connection.execute(
+      `BEGIN
+            ICTDAT.p_zap.UpdateTimeZap(:pKodAuthor,:pKodZap);
+        END;`,
+      {
+        pKodAuthor,
+        pKodZap,
+      }
+    );
+    console.log(result);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   createZap,
@@ -115,4 +135,5 @@ module.exports = {
   getGroups,
   deleteZap,
   getClosedZap,
+  refreshZap,
 };
