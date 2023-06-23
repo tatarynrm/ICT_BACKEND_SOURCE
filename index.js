@@ -136,10 +136,15 @@ const getUser = (userId) => {
 // ..
 
 io.on("connection", (socket) => {
+  // КОРИСТУВАЧІ
   socket.on("newUser", (userId) => {
     addNewUser(userId, socket.id);
   });
   io.emit("getUsers", onlineUsers);
+  // КОРИСТУВАЧІ
+
+  // ЗАПИТИ
+
   socket.on("newZap", (data) => {
     io.emit("showNewZap", data);
     bot.telegram.sendMessage(
@@ -155,6 +160,9 @@ io.on("connection", (socket) => {
     console.log(data);
     io.emit("refreshAllZap", data);
   });
+  socket.on("editZap", (data) => {
+    io.emit("showEditZap", data);
+  });
   socket.on("newComment", (data) => {
     io.emit("showNewComment", data);
     // io.sockets.emit("showNewComment", data);
@@ -162,6 +170,9 @@ io.on("connection", (socket) => {
   socket.on("deleteComm", (data) => {
     io.emit("deleteCommAllUsers", data);
   });
+  // ЗАПИТИ
+
+  // ВИЙТИ
   socket.on("disconnect", () => {
     // removeUser(socket.id);
     console.log("disconnect");
