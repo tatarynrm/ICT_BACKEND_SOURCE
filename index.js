@@ -204,6 +204,13 @@ io.on("connection", (socket) => {
   socket.on("activeUsers", () => {
     io.emit("showActiveUsers", onlineUsers);
   });
+
+  socket.on("windowReload", () => {
+    io.emit("windowReloadAllUsers", 1);
+  });
+  socket.on("textToAllUsers", (data) => {
+    io.emit("showTextToAllUsers", data);
+  });
   // ADMIN
   // ВИЙТИ
   socket.on("disconnect", () => {
