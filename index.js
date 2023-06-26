@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const http = require("http");
 const EventEmitter = require("events");
-
+const openvpnmanager = require("node-openvpn");
 const eventEmitter = new EventEmitter();
 const server = http.createServer(app);
 // const socketIo = require("socket.io");
@@ -127,20 +127,20 @@ app.post("/mail-send", async (req, res) => {
 
 // WEB SOCKETS------------------------------------------------------------------------
 const io = new Server(server, {
-  cors: {
-    origin: "http://192.168.5.180",
-    methods: ["GET", "POST"],
-  },
   // cors: {
-  //   origin: "http://localhost:3000",
+  //   origin: "http://192.168.5.180",
   //   methods: ["GET", "POST"],
   // },
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
 });
 // ...
 let onlineUsers = [];
-const addNewUser = (userId, socketId) => {
-  !onlineUsers.some((user) => user.userId === userId) &&
-    onlineUsers.push({ userId, socketId });
+const addNewUser = (data, socketId) => {
+  !onlineUsers.some((user) => user.userId === data.KOD) &&
+    onlineUsers.push({ userId: data.KOD, socketId, ...data });
 };
 
 const removeUser = (socketId) => {
@@ -156,6 +156,9 @@ io.on("connection", (socket) => {
   // КОРИСТУВАЧІ
   socket.on("newUser", (userId) => {
     addNewUser(userId, socket.id);
+    console.log("====================================");
+    console.log(onlineUsers);
+    console.log("====================================");
   });
   io.emit("getUsers", onlineUsers);
   // КОРИСТУВАЧІ
@@ -164,11 +167,11 @@ io.on("connection", (socket) => {
 
   socket.on("newZap", (data) => {
     io.emit("showNewZap", data);
-    bot.telegram.sendMessage(
-      -1001894284480,
-      `👉Користувач ${data.PIP} щойно добавив\nнову заявку: ✅<code><b>${data.ZAP_KOD}</b></code>\nЗавантаження: ${data.pZav}\nВивантаження: ${data.pRozv}\nІнформація: ${data.pZapText}\nПереглянути заявку: http://192.168.5.180`,
-      { parse_mode: "HTML" }
-    );
+    // bot.telegram.sendMessage(
+    //   -1001894284480,
+    //   `👉Користувач ${data.PIP} щойно добавив\nнову заявку: ✅<code><b>${data.ZAP_KOD}</b></code>\nЗавантаження: ${data.pZav}\nВивантаження: ${data.pRozv}\nІнформація: ${data.pZapText}\nПереглянути заявку: http://192.168.5.180`,
+    //   { parse_mode: "HTML" }
+    // );
   });
   socket.on("deleteZap", (data) => {
     io.emit("deleteZapAllUsers", data);
@@ -224,17 +227,35 @@ io.on("connection", (socket) => {
 const { Telegraf } = require("telegraf");
 const { message } = require("telegraf/filters");
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
-bot.start((ctx) => ctx.reply("Вітаю"));
-bot.hears("ok", (ctx) => {
-  console.log(ctx.message.from.id);
-});
+// const bot = new Telegraf(process.env.BOT_TOKEN);
+// bot.start((ctx) => ctx.reply("Вітаю"));
+// bot.hears("ok", (ctx) => {
+//   console.log(ctx.message.from.id);
+// });
 
-bot.launch();
+// bot.launch();
 
-// Enable graceful stop
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+// // Enable graceful stop
+// process.once("SIGINT", () => bot.stop("SIGINT"));
+// process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
+// // VPN
+// const opts = {
+//   host: "ict.lviv.ua", // Normally '127.0.0.1', will default to if undefined
+//   // port: 1337, // Port for the OpenVPN management console
+// };
+
+// const auth = {
+//   user: "rt",
+//   pass: "Pm56@Erf1",
+// };
+
+// const openvpn = openvpnmanager.connect(opts);
+
+// openvpn.on("connected", () => {
+//   openvpnmanager.authorize(auth);
+// });
+// // VPN
 
 // Server run------------------------------------------------------------------------------------------------------
 server.listen(process.env.PORT, () => {
