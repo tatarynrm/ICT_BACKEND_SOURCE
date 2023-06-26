@@ -49,40 +49,56 @@ app.use("/comments", commentsRoute);
 
 // NODEMAILER
 
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: "tatarynrm@gmail.com",
+//     pass: "uexmjdtvgddhnmkj",
+//   },
+// });
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+  // service: "uarnet",
+  host: "demomail.uar.net",
+  port: 465,
+  // 465
+  // secure: false,
   auth: {
-    user: "tatarynrm@gmail.com",
-    pass: "uexmjdtvgddhnmkj",
+    user: "tarasdragan@demomail.uar.net",
+    pass: "44zf8Fd9CR",
   },
 });
-const handlebarOptions = {
-  viewEngine: {
-    extName: ".hbs",
-    partialsDir: "./views/",
-    defaultLayout: false,
-  },
-  viewPath: "./views/",
-  extName: ".hbs",
-};
-transporter.use("compile", hbs(handlebarOptions));
+
+// const handlebarOptions = {
+//   viewEngine: {
+//     extName: ".hbs",
+//     partialsDir: "./views/",
+//     defaultLayout: false,
+//   },
+//   viewPath: "./views/",
+//   extName: ".hbs",
+// };
+// transporter.use("compile", hbs(handlebarOptions));
 
 // NODEMAILER
 app.post("/mail-send", async (req, res) => {
-  const { from, to, theme } = req.body;
+  const { from, to, theme, text } = req.body;
+  console.log("====================================");
+  console.log(req.body);
+  console.log("====================================");
   try {
     const mailOptions = {
       from: `${from}`,
       to: `${to}`,
       subject: `${theme}`,
-      template: "email",
-      context: {
-        title: "Тестовий лист",
-        full_name: "Роман",
-      },
+      text: text,
+      // template: "email",
+      // context: {
+      //   title: "Тестовий лист",
+      //   full_name: "Роман",
+      // },
     };
     const mail = await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -92,6 +108,7 @@ app.post("/mail-send", async (req, res) => {
         res.json(info);
       }
     });
+    res.status(200).json({ status: "ok" });
   } catch (error) {
     console.log(error);
   }
@@ -164,13 +181,21 @@ io.on("connection", (socket) => {
     io.emit("showEditZap", data);
   });
   socket.on("newComment", (data) => {
-    console.log(data);
+    // console.log(socket.userId);
 
     io.emit("showNewComment", data);
     // io.sockets.emit("showNewComment", data);
   });
+
   socket.on("deleteComm", (data) => {
     io.emit("deleteCommAllUsers", data);
+  });
+  socket.on("myZapComment", (data) => {
+    console.log("my__comment", data);
+    const userToSend = onlineUsers.filter(
+      (item) => item.userId === data.pKodAuthor
+    );
+    io.to(userToSend.socketId).emit("showMyZapComment", data);
   });
   // ЗАПИТИ
 
