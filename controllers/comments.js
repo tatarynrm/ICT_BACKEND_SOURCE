@@ -53,6 +53,9 @@ const setReadComments = async (req, res) => {
         pKodZap: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
       }
     );
+    console.log("==============SETREADCOMMENTS==================");
+    console.log(result);
+    console.log("====================================");
     res.status(200).json(result);
   } catch (error) {
     console.log(error);

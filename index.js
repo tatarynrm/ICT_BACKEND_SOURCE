@@ -164,6 +164,8 @@ io.on("connection", (socket) => {
     io.emit("showEditZap", data);
   });
   socket.on("newComment", (data) => {
+    console.log(data);
+
     io.emit("showNewComment", data);
     // io.sockets.emit("showNewComment", data);
   });
@@ -172,6 +174,12 @@ io.on("connection", (socket) => {
   });
   // ЗАПИТИ
 
+  // ADMIN
+
+  socket.on("activeUsers", () => {
+    io.emit("showActiveUsers", onlineUsers);
+  });
+  // ADMIN
   // ВИЙТИ
   socket.on("disconnect", () => {
     // removeUser(socket.id);
