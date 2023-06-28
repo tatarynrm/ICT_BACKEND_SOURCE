@@ -213,15 +213,7 @@ io.on("connection", (socket) => {
     io.emit("showTextToAllUsers", data);
   });
   socket.on("admin_msg_user", (data) => {
-    console.log(data);
-    console.log("============onlineUsers=====================");
-    console.log(onlineUsers);
-
-    const userTo = onlineUsers.find((item) => item.socketId === data.id);
-    console.log("==============UserTo===================");
-    console.log(userTo);
-
-    io.to(userTo.socketId).emit("show_msg_from_admin", data);
+    io.emit("show_msg_from_admin", data);
   });
   // ADMIN
   // ВИЙТИ
