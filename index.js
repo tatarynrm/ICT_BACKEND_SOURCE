@@ -165,11 +165,11 @@ io.on("connection", (socket) => {
 
   socket.on("newZap", (data) => {
     io.emit("showNewZap", data);
-    // bot.telegram.sendMessage(
-    //   -1001894284480,
-    //   `👉Користувач ${data.PIP} щойно добавив\nнову заявку: ✅<code><b>${data.ZAP_KOD}</b></code>\nЗавантаження: ${data.pZav}\nВивантаження: ${data.pRozv}\nІнформація: ${data.pZapText}\nПереглянути заявку: http://192.168.5.180`,
-    //   { parse_mode: "HTML" }
-    // );
+    bot.telegram.sendMessage(
+      -1001894284480,
+      `👉Користувач ${data.PIP} щойно добавив\nнову заявку: ✅<code><b>${data.ZAP_KOD}</b></code>\nЗавантаження: ${data.pZav}\nВивантаження: ${data.pRozv}\nІнформація: ${data.pZapText}\nПереглянути заявку: http://192.168.5.180`,
+      { parse_mode: "HTML" }
+    );
   });
   socket.on("deleteZap", (data) => {
     io.emit("deleteZapAllUsers", data);
@@ -214,11 +214,14 @@ io.on("connection", (socket) => {
   });
   socket.on("admin_msg_user", (data) => {
     console.log(data);
-    const userId = onlineUsers.find((item) => item.socketId === data.id);
-    console.log("===============userId=====================");
-    console.log(userId);
-    console.log("====================================");
-    io.emit("show_msg_from_admin", data);
+    console.log("============onlineUsers=====================");
+    console.log(onlineUsers);
+
+    const userTo = onlineUsers.find((item) => item.socketId === data.id);
+    console.log("==============UserTo===================");
+    console.log(userTo);
+
+    io.to(userTo.socketId).emit("show_msg_from_admin", data);
   });
   // ADMIN
   // ВИЙТИ
